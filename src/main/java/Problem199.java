@@ -47,7 +47,6 @@ public class Problem199 {
         for(Integer val : list) {
             System.out.print(val + " ");
         }
-        System.out.println();
     }
 
 }
