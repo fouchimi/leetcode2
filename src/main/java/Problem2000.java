@@ -3,6 +3,8 @@ import java.util.List;
 
 public class Problem2000 {
     public int maxNumber(int num) {
+        if(num == 0) return 50;
+
         List<Integer> l = new ArrayList<>();
         int sign = num < 0 ? -1 : 1;
         num = Math.abs(num);
