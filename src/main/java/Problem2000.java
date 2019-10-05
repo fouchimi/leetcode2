@@ -16,10 +16,9 @@ public class Problem2000 {
         }
 
         int index = 0;
-        if (sign > 0) while (index < l.size() && l.get(index) > 5) {
-            index++;
-        }
+        if (sign > 0) while (index < l.size() && l.get(index) > 5) index++;
         else while (index < l.size() && l.get(index) < 5) index++;
+
         l.add(index, 5);
 
         int result = 0;
