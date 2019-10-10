@@ -3,7 +3,7 @@ import java.util.Queue;
 
 public class Problem700 {
 
-    public TreeNode searchBST(TreeNode root, int val) {
+    public TreeNode searchBST2(TreeNode root, int val) {
         if(root == null) return null;
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
@@ -18,6 +18,13 @@ public class Problem700 {
             }
         }
         return null;
+    }
+
+    public TreeNode searchBST(TreeNode root, int val) {
+        if(root == null) return null;
+        if(root.val == val) return root;
+        if(root.val  > val) return searchBST(root.left, val);
+        else return searchBST(root.right, val);
     }
 
     private void inOrder(TreeNode x) {
