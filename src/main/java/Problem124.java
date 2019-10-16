@@ -1,24 +1,27 @@
 public class Problem124 {
-    int max = Integer.MIN_VALUE;
+    int maxSum = Integer.MIN_VALUE;
+
     public int maxPathSum(TreeNode root) {
         helper(root);
-        return max;
+        return maxSum;
     }
 
-    private int helper(TreeNode x) {
-        if(x == null) return 0;
-        int leftSum = helper(x.left);
-        int rightSum = helper(x.right);
-        int leftSideSum = x.val + leftSum;
-        int rightSideSum = x.val + rightSum;
-        int subTreeSum = x.val + leftSideSum + rightSideSum;
-        int maxRightOrLeft = Math.max(leftSum, rightSum);
-        int maxSidesOrNode = Math.max(x.val, maxRightOrLeft);
-        int maxSubtreeOrSidesOrNode = Math.max(subTreeSum, maxSidesOrNode);
-        max = Math.max(max, maxSubtreeOrSidesOrNode);
+    private int helper(TreeNode node){
+        if(node == null){
+            return 0;
+        }
+        int leftSum = helper(node.left);
+        int rightSum = helper(node.right);
+        int rightSideSum=node.val+rightSum;
+        int leftSideSum=node.val+leftSum;
+        int subTreeSum = node.val+leftSum+rightSum;
+        int maxRightOrLeft =Math.max(leftSideSum, rightSideSum);
+        int maxSidesOrNode=Math.max(node.val,maxRightOrLeft);
+        int maxSubTreeOrSidesOrNode=Math.max(subTreeSum,maxSidesOrNode );
+        maxSum = Math.max(maxSum, maxSubTreeOrSidesOrNode);
         return maxSidesOrNode;
     }
-
+}
     public static void main(String[] args) {
         Problem124 problem124 = new Problem124();
         TreeNode root = new TreeNode(5);
