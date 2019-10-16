@@ -5,6 +5,7 @@ public class Node {
     public Node left;
     public Node right;
     public Node next;
+    public Node random;
     public List<Node> children;
     public List<Node> neighbors;
 
@@ -24,5 +25,11 @@ public class Node {
     public Node (int _val, List<Node> _children) {
         val = _val;
         children = _children;
+    }
+
+    public Node (int _val, Node _next, Node _random) {
+        this.val = _val;
+        this.next = _next;
+        this.random = _random;
     }
 }
