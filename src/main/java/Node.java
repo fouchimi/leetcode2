@@ -6,6 +6,7 @@ public class Node {
     public Node right;
     public Node next;
     public List<Node> children;
+    public List<Node> neighbors;
 
     public Node() {}
 
