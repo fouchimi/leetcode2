@@ -21,7 +21,7 @@ public class Problem124 {
         maxSum = Math.max(maxSum, maxSubTreeOrSidesOrNode);
         return maxSidesOrNode;
     }
-}
+
     public static void main(String[] args) {
         Problem124 problem124 = new Problem124();
         TreeNode root = new TreeNode(5);
