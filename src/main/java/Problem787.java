@@ -2,40 +2,42 @@ import java.util.*;
 
 public class Problem787 {
 
-    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
-        int[] dist = new int[n];
-        for(int v = 0; v < n; v++) dist[v] = Integer.MAX_VALUE;
-        Map<Integer, List<int[]>> map = new HashMap<>();
-        for(int v = 0; v < n; v++) map.put(v, new ArrayList<>());
+    class Tuple {
+        int stop;
+        int price;
+        int city;
 
-        for(int i = 0; i < flights.length; i++) {
-            int[] tuple = flights[i];
-            map.get(tuple[0]).add(new int[]{tuple[1], tuple[2]});
+        public Tuple(int stop, int price, int city) {
+            this.stop = stop;
+            this.price = price;
+            this.city = city;
         }
-        List<Integer> path = new ArrayList<>();
-        path.add(src);
-        Queue<List<Integer>> q = new ArrayDeque<>();
-        q.offer(path);
-        dist[src] = 0;
-        Set<Integer> visited = new HashSet<>();
+    }
+
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
+        List<Map<Integer, Integer>> graph = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) graph.add(new HashMap<>());
+
+        for (int[] flight : flights) {
+            graph.get(flight[0]).put(flight[1], flight[2]);
+        }
+
+        Queue<Tuple> q = new PriorityQueue<>(Comparator.comparingInt(o -> o.price));
+
+        q.add(new Tuple(-1, 0, src));
+        Set<Integer> settled = new HashSet<>();
         while (!q.isEmpty()) {
-            List<Integer> currentPath = q.poll();
-            int u = currentPath.get(currentPath.size()-1);
-            if(!visited.contains(u)) {
-                for(int[] neighborTuple : map.get(u)) {
-                    int w = neighborTuple[0];
-                    List<Integer> newPath = new ArrayList<>(currentPath);
-                    newPath.add(w);
-                    q.offer(newPath);
-                    if (dist[w] > dist[u] + neighborTuple[1]) {
-                        if (newPath.size() - 2 < K || (w == dst && newPath.size() - 2 == K))
-                            dist[w] = dist[u] + neighborTuple[1];
-                    }
+            Tuple node = q.poll();
+            if (node.city == dst) return node.price;
+            settled.add(node.city);
+            if (node.stop < K)
+                for (Map.Entry<Integer, Integer> entry : graph.get(node.city).entrySet()) {
+                    if (!settled.contains(entry.getKey()))
+                        q.add(new Tuple(node.stop + 1, entry.getValue() + node.price, entry.getKey()));
                 }
-                visited.add(u);
-            }
         }
-        return dist[dst] == Integer.MAX_VALUE ? -1 : dist[dst];
+        return -1;
     }
 
 
