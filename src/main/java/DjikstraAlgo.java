@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Djikstra {
+public class DjikstraAlgo {
     class Pair implements Comparable<Pair> {
         int v;
         int cost;
