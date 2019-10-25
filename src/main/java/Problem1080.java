@@ -36,7 +36,6 @@ public class Problem1080 {
         root.right.left = new TreeNode(4);
 
         TreeNode r = problem1080.sufficientSubset(root, -1);
-        problem1080.inOrder(r);
 
     }
 }
