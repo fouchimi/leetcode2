@@ -1,4 +1,4 @@
-public class Problem99 {
+public class Problem98 {
 
     public boolean isValidBST(TreeNode root) {
         if(root == null) return true;
@@ -12,13 +12,13 @@ public class Problem99 {
     }
 
     public static void main(String[] args) {
-        Problem99 problem99 = new Problem99();
+        Problem98 problem98 = new Problem98();
         TreeNode root = new TreeNode(5);
         root.left = new TreeNode(1);
         root.right = new TreeNode(4);
         root.right.left = new TreeNode(3);
         root.right.right = new TreeNode(6);
 
-        System.out.println(problem99.isValidBST(root));
+        System.out.println(problem98.isValidBST(root));
     }
 }
