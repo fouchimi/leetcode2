@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Problem310 {
+public class Problem301 {
 
     List<String> results;
     Set<String> set;
@@ -63,8 +63,8 @@ public class Problem310 {
     }
 
     public static void main(String[] args) {
-        Problem310 problem310 = new Problem310();
-        List<String> list = problem310.removeInvalidParentheses("()())()");
+        Problem301 problem301 = new Problem301();
+        List<String> list = problem301.removeInvalidParentheses("()())()");
         for(String parenthese : list) {
             System.out.print(parenthese + " ");
         }
