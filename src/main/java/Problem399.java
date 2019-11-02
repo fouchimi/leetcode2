@@ -44,9 +44,9 @@ public class Problem399 {
             List<String> query = queries.get(i);
             String src = query.get(0);
             String dst = query.get(1);
-            if (src.equals(dst) && vertices.contains(src) && vertices.contains(dst)) res[i] = 1.0D;
-            else if (vertices.contains(src) && vertices.contains(dst)) {
-                dfs(src, dst, map, visitedMap, i, 1.0D, res);
+            if (vertices.contains(src) && vertices.contains(dst)) {
+                if (src.equals(dst)) res[i] = 1.0D;
+                else dfs(src, dst, map, visitedMap, i, 1.0D, res);
             }
         }
         return res;
