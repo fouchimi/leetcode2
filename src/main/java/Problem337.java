@@ -1,4 +1,4 @@
-public class Problem377 {
+public class Problem337 {
 
     public int rob(TreeNode root) {
         if(root == null) return 0;
@@ -13,12 +13,12 @@ public class Problem377 {
     }
 
     public static void main(String[] args) {
-        Problem377 problem377 = new Problem377();
+        Problem337 problem337 = new Problem337();
         TreeNode root = new TreeNode(3);
         root.left = new TreeNode(2);
         root.left.right = new TreeNode(3);
         root.right = new TreeNode(3);
         root.right.right = new TreeNode(1);
-        System.out.println(problem377.rob(root));
+        System.out.println(problem337.rob(root));
     }
 }
