@@ -1,24 +1,28 @@
+import java.util.Stack;
+
 public class Problem503 {
     public int[] nextGreaterElements(int[] nums) {
-        if (nums == null || nums.length == 0) return new int[]{0};
-        int[] res = new int[nums.length];
-        int N = nums.length, i = 0;
-        while (i < N) {
-            int j = i + 1;
-            j = j >= N ? j % N : j;
-            boolean found = false;
-            while (j != i) {
-                if (nums[j] > nums[i]) {
-                    found = true;
-                    break;
-                }
-                j = (j + 1) % N;
-            }
-            res[i] = found ? nums[j] : -1;
-            i++;
+
+        int n = nums.length;
+        int[] result = new int[n];
+
+        Stack<Integer> stack = new Stack<>();
+        for (int i = n - 1; i >= 0; i--) {
+            stack.push(i);
         }
 
-        return res;
+        for (int i = n - 1; i >= 0; i--) {
+            result[i] = -1;
+            while (!stack.isEmpty() && nums[stack.peek()] <= nums[i]) {
+                stack.pop();
+            }
+            if (!stack.isEmpty()){
+                result[i] = nums[stack.peek()];
+            }
+            stack.add(i);
+        }
+
+        return result;
     }
 
     public static void main(String[] args) {
