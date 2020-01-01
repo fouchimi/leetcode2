@@ -7,15 +7,15 @@ public class Problem179 {
         Arrays.sort(strs, (first, second) -> {
             String f = first + second;
             String s = second + first;
-            int fValue = Integer.parseInt(f);
-            int sValue = Integer.parseInt(s);
-            if (fValue > sValue) return -1;
-            else if (fValue < sValue) return 1;
-            else return 0;
+            return s.compareTo(f);
         });
         StringBuilder sb = new StringBuilder();
-        for (String val : strs) sb.append(val);
-        return sb.toString();
+        int countZeros = 0;
+        for (String val : strs) {
+            if (val.equals("0")) countZeros++;
+            sb.append(val);
+        }
+        return countZeros == strs.length ? "0" : sb.toString();
     }
 
     public static void main(String[] args) {
