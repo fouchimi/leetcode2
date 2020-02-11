@@ -1,15 +1,22 @@
+import java.util.HashMap;
+
 public class Problem494 {
     public int findTargetSumWays(int[] nums, int S) {
-        return dfs(0, nums, S, 0);
+        return dfs(0, nums, S, 0, new HashMap<>());
     }
 
-    private int dfs(int currSum, int[] nums, int S, int currentIndex) {
+    private int dfs(int currSum, int[] nums, int S, int currentIndex, HashMap<String, Integer> map) {
+        String key = currentIndex + "#" + currSum;
+        if (map.containsKey(key)) return map.get(key);
         if (currentIndex == nums.length) {
             return currSum == S ? 1 : 0;
         } else  {
             int left = currSum - nums[currentIndex];
             int right = currSum + nums[currentIndex];
-            return dfs(left, nums, S, currentIndex + 1) + dfs(right, nums, S, currentIndex + 1);
+            int count = dfs(left, nums, S, currentIndex + 1, map);
+            count += dfs(right, nums, S, currentIndex + 1, map);
+            map.put(key, count);
+            return count;
         }
     }
 
