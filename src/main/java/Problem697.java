@@ -24,7 +24,6 @@ public class Problem697 {
                 result = Math.min(result, (maxIndexMap.get(key) - minIndexMap.get(key) + 1));
             }
         }
-
         return result;
     }
 
