@@ -1,20 +1,31 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Problem1339 {
+    private  long maxProduct = 0L;
     public int maxProduct(TreeNode root) {
         if (root == null) return 0;
-        List<Integer> list = new ArrayList<>();
-        dfs(root, list);
-
-        return 0;
+        int mod = 1000000007;
+        int totalSum = getSum(root);
+        getMaxProd(root, totalSum);
+        return (int) (maxProduct % mod);
     }
 
-    private void dfs(TreeNode x, List<Integer> list) {
-        if (x == null) return;
-        dfs(x.left, list);
-        list.add(x.val);
-        dfs(x.right, list);
+    private int getSum(TreeNode x) {
+        if (x == null) return 0;
+        return x.val + getSum(x.left) + getSum(x.right);
+    }
+
+    private int getMaxProd(TreeNode x, int totalSum) {
+        if (x == null) return 0;
+        int left = getMaxProd(x.left, totalSum);
+        int right = getMaxProd(x.right, totalSum);
+        int sum = x.val + left + right;
+        long currentProd = (long) sum * (totalSum - sum);
+        maxProduct = Math.max(currentProd, maxProduct);
+        return sum;
     }
 
     public static void main(String[] args) {
