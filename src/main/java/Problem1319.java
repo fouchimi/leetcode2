@@ -23,7 +23,7 @@ public class Problem1319 {
         }
 
         if (unConnectedComponents == 0) return 0;
-        else if (connections.length == n - 1) return connections.length - (unConnectedComponents + connectedComponents);
+        else if (connections.length >= n - 1) return (unConnectedComponents + connectedComponents) - 1;
         else return -1;
     }
 
