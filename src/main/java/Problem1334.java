@@ -1,42 +1,44 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Arrays;
 
 public class Problem1334 {
 
     public int findTheCity(int n, int[][] edges, int distanceThreshold) {
-        List<int[]>[] map = new ArrayList[n];
-        for (int i = 0; i < n; i++) map[i] = new ArrayList<>();
+        int[][] dp = new int[n][n];
+        for (int i = 0; i < n; i++) Arrays.fill(dp[i], Integer.MAX_VALUE);
+
+        for (int i = 0, j = 0; i < n && j < n; i++, j++) dp[i][j] = 0;
+
         for (int[] edge : edges) {
-            int src = edge[0], dst = edge[1], dist = edge[2];
-            map[src].add(new int[]{dst, dist});
-            map[dst].add(new int[]{src, dist});
+            int src = edge[0], dest = edge[1], dist = edge[2];
+            dp[src][dest] = dist;
+            dp[dest][src] = dist;
         }
-        boolean[] visited = new boolean[n];
-        int minCount = Integer.MAX_VALUE;
-        int city = 0;
-        for (int v = 0; v < n; v++) {
-            Set<Integer> neighbors = new HashSet<>();
-            dfs(v, map, visited, neighbors, 0, distanceThreshold);
-            if (neighbors.size() <= minCount) {
-                city = v;
-                minCount = neighbors.size();
+
+        for (int k = 0; k < n; k++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (dp[i][k] == Integer.MAX_VALUE || dp[k][j] == Integer.MAX_VALUE) continue;
+                    dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k][j]);
+                }
             }
         }
-        return city;
+
+        int min = Integer.MAX_VALUE, selectedCity = -1;
+        for (int i = 0; i < n; i++) {
+            int count = 0;
+            for (int j = 0; j < n; j++) {
+                if (i == j) continue;
+                if (dp[i][j] <= distanceThreshold) count++;
+            }
+            if (count < min) {
+                selectedCity = i;
+                min = count;
+            }
+        }
+
+        return selectedCity;
     }
 
-    private void dfs(int s, List<int[]>[] map, boolean[] visited, Set<Integer> neighbors, int sumDist, int threshold) {
-        visited[s] = true;
-        for (int[] w : map[s]) {
-            if (!visited[w[0]] && sumDist + w[1] <= threshold) {
-                neighbors.add(w[0]);
-                dfs(w[0], map, visited, neighbors, sumDist + w[1], threshold);
-            }
-        }
-        visited[s] = false;
-    }
 
     public static void main(String[] args) {
         Problem1334 problem1334 = new Problem1334();
