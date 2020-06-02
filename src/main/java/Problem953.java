@@ -24,8 +24,7 @@ public class Problem953 {
             i++;
             j++;
         }
-        if (i < first.length()) return false;
-        return true;
+        return i >= first.length();
     }
 
     public static void main(String[] args) {
