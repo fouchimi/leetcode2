@@ -1,43 +1,33 @@
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Problem1400 {
 
-    public int[] sortedSquares(int[] A) {
-        int[] ans = new int[A.length];
-        int i = 0;
+    public boolean canConstruct(String s, int k) {
+        if (k > s.length()) return false;
 
-        while (i < A.length && A[i] < 0) i++;
+        Map<Character, Integer> map = new HashMap<>();
 
-        int j = i, index = 0;
-
-        while (j >= 0 && i < A.length) {
-            if (A[j] * A[j] < A[i] * A[i]) {
-                ans[index] = A[j] * A[j];
-                j--;
-            } else {
-                ans[index] = A[i] * A[i];
-                i++;
-            }
-            index++;
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
         }
 
-        while(j >= 0) {
-            ans[index] = A[j] * A[j];
-            j--;
-            index++;
+        int oddCount = 0;
+        for (char key : map.keySet()) {
+            int value = map.get(key);
+            if (value % 2 == 1) oddCount++;
         }
 
-        while(i < A.length) {
-            ans[index] = A[i] * A[i];
-            i++;
-            index++;
-        }
-
-        return ans;
+        return oddCount <= k;
     }
 
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
+        Problem1400 problem1400 = new Problem1400();
+        System.out.println(problem1400.canConstruct("annabelle", 2));
+        System.out.println(problem1400.canConstruct("leetcode", 3));
+        System.out.println(problem1400.canConstruct("true", 4));
+        System.out.println(problem1400.canConstruct("yzyzyzyzyzyzyzy", 2));
+        System.out.println(problem1400.canConstruct("cr", 7));
     }
 }
