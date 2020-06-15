@@ -2,39 +2,22 @@ import java.util.*;
 
 public class Problem881 {
     public int numRescueBoats(int[] people, int limit) {
-        int min = 0;
         Arrays.sort(people);
-        for (int i = people.length - 1; i >= 0;) {
-            int val = people[i];
-            if (val >= limit) {
-                min++;
-                i--;
+        int n = people.length;
+        int l = 0, r = n - 1;
+        int ans = 0;
+        while (l < r) {
+            int sum = people[l] + people[r];
+            ans++;
+            if (sum <= limit) {
+                l++;
+                r--;
             } else {
-                int sum = 0, j = i, steps = 0;
-                while (j >= 0 && sum < limit) {
-                    sum += people[j];
-                    j--;
-                    steps++;
-                }
-                if (sum <= limit) min++;
-                else if (hasGCD(sum, limit)) min += sum / limit;
-                else min += steps;
-                i = j;
+                r--;
             }
         }
-
-        return min;
-    }
-
-    private boolean hasGCD(int a, int b) {
-        while (a != b) {
-            if (a > b) {
-                a -= b;
-            } else {
-                b -= a;
-            }
-        }
-        return a > 1;
+        if (l == r) ans++;
+        return ans;
     }
 
     public static void main(String[] args) {
@@ -45,5 +28,10 @@ public class Problem881 {
         System.out.println(problem881.numRescueBoats(new int[]{2, 2}, 6));
         System.out.println(problem881.numRescueBoats(new int[]{3, 1, 7}, 7));
         System.out.println(problem881.numRescueBoats(new int[]{5, 1, 4, 2}, 6));
+        System.out.println(problem881.numRescueBoats(new int[]{3, 2, 2, 1}, 3));
+        System.out.println(problem881.numRescueBoats(new int[]{3, 2, 3, 2, 2}, 6));
+        System.out.println(problem881.numRescueBoats(new int[]{3, 8, 7, 1, 4}, 9));
+        System.out.println(problem881.numRescueBoats(new int[]{5, 1, 7, 4, 2, 4}, 7));
+        // 7, 5, 4, 4, 2, 1
     }
 }
