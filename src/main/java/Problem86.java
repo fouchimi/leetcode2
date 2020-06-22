@@ -1,83 +1,37 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Problem86 {
     public ListNode partition(ListNode head, int x) {
-        if (head == null) return null;
-        ListNode cursor = head, pivot = null, prev = null;
+        List<ListNode> tailList = new ArrayList<>(), prefixList = new ArrayList<>();
+        ListNode cursor = head;
         while (cursor != null) {
-            if (cursor.val == x) {
-                pivot = cursor;
-                break;
-            }
-            prev = cursor;
-            cursor = cursor.next;
-        }
-
-        List<ListNode> lessThanPivotList = new ArrayList<>();
-        List<ListNode> greatOrEqualThanPivotList = new ArrayList<>();
-
-        cursor = pivot != null ? pivot : head;
-
-        while (cursor != null) {
-            if (cursor.val < x) lessThanPivotList.add(cursor);
-            else greatOrEqualThanPivotList.add(cursor);
-            cursor = cursor.next;
-        }
-
-        for (ListNode node : lessThanPivotList) node.next = null;
-        for (ListNode node : greatOrEqualThanPivotList) node.next = null;
-
-        if (pivot == null) {
-
-            for (int i = 1; i < lessThanPivotList.size(); i++) {
-                lessThanPivotList.get(i-1).next = lessThanPivotList.get(i);
-            }
-
-            for (int j = 1; j < greatOrEqualThanPivotList.size(); j++) {
-                greatOrEqualThanPivotList.get(j-1).next = greatOrEqualThanPivotList.get(j);
-            }
-
-            if (lessThanPivotList.isEmpty() || greatOrEqualThanPivotList.isEmpty()) return head;
-
-            lessThanPivotList.get(lessThanPivotList.size() - 1).next = greatOrEqualThanPivotList.get(0);
-            return lessThanPivotList.get(0);
-
-        } else {
-            ListNode tailList = new ListNode(Integer.MIN_VALUE);
-            ListNode cursorList = tailList;
-
-            while (!greatOrEqualThanPivotList.isEmpty()) {
-                cursorList.next = greatOrEqualThanPivotList.remove(0);
-                cursorList = cursorList.next;
-            }
-
-            if (prev == null) {
-                for (int i = 1; i < lessThanPivotList.size(); i++) {
-                    lessThanPivotList.get(i-1).next = lessThanPivotList.get(i);
-                }
-                if (lessThanPivotList.isEmpty()) return tailList.next;
-                lessThanPivotList.get(lessThanPivotList.size() - 1).next = tailList.next;
-                return lessThanPivotList.get(0);
-
+            ListNode next = cursor.next;
+            cursor.next = null;
+            if (cursor.val < x) {
+                prefixList.add(cursor);
             } else {
-                prev.next = pivot;
-                pivot.next = cursorList.next;
+                tailList.add(cursor);
             }
-            cursor = head;
-            ListNode temp = null;
-            while (cursor != null) {
-                if (!lessThanPivotList.isEmpty() && cursor.val > lessThanPivotList.get(0).val) break;
-                temp = cursor;
-                cursor = cursor.next;
-            }
-            while (!lessThanPivotList.isEmpty() && temp != null) {
-                temp.next = lessThanPivotList.remove(0);
-                temp = temp.next;
-            }
-            if (temp != null) temp.next = cursor;
-            return head;
+            cursor = next;
         }
+
+        //prefixList.sort((first, second) -> first.val - second.val);
+
+        ListNode dummy = new ListNode(Integer.MIN_VALUE);
+        cursor = dummy;
+
+        while (!prefixList.isEmpty()) {
+            cursor.next = prefixList.remove(0);
+            cursor = cursor.next;
+        }
+
+        while(!tailList.isEmpty()) {
+            cursor.next = tailList.remove(0);
+            cursor = cursor.next;
+        }
+        return dummy.next;
     }
 
     private void print(ListNode x) {
