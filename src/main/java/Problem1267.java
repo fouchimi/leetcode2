@@ -59,5 +59,16 @@ public class Problem1267 {
         count[0]++;
         for (int w : map.get(s)) {
             dfs(w, map, count, visited);
+        }
+    }
+
+    public static void main(String[] args) {
+        Problem1267 problem1267 = new Problem1267();
+        System.out.println(problem1267.countServers(new int[][]{{1, 0}, {0, 1}}));
+        System.out.println(problem1267.countServers(new int[][]{{1, 0}, {1, 1}}));
+        System.out.println(problem1267.countServers(new int[][]{{1, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}}));
+        System.out.println(problem1267.countServers(new int[][]{{1, 0, 0, 1, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 1, 0}}));
+        System.out.println(problem1267.countServers(new int[][]{{0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 1}, {0, 0, 1, 1}, {0, 0, 0, 1}}));
+    }
 
 }
