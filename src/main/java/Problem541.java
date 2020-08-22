@@ -1,39 +1,27 @@
 public class Problem541 {
     public String reverseStr(String s, int k) {
-        int start = 0, end = k, j = 0;
         StringBuilder sb = new StringBuilder();
-
-        if (s.length() < k) {
-            int i = 0;
-            while (i < s.length()) {
-                sb.insert(0, s.charAt(i));
-                i++;
-            }
+        int N = 2*k;
+        while (s.length() >= N) {
+            String prefix = s.substring(0, k);
+            sb.append(reverse(prefix));
+            String suffix = s.substring(k, N);
+            sb.append(suffix);
+            s = s.substring(N);
         }
-
-        while (start < end && end <= s.length()) {
-            String prefix = s.substring(start, end);
-            StringBuilder tempSb = new StringBuilder();
-            if (j % 2 == 0) {
-                for (int i = prefix.length() - 1; i >= 0; i--) tempSb.append(prefix.charAt(i));
-            }
-            else {
-                for (int i = 0; i < prefix.length(); i++) tempSb.append(prefix.charAt(i));
-            }
-            sb.append(tempSb.toString());
-            start = end;
-            end += k;
-            j++;
+        if (s.length() < k) sb.append(s);
+        else {
+            String p = s.substring(0, k);
+            sb.append(reverse(p));
+            s = s.substring(k);
+            if (s.length() > 0) sb.append(s);
         }
+        return sb.toString();
+    }
 
-        StringBuilder suffix = new StringBuilder();
-        if (sb.toString().length() < s.length()) {
-            while (start < s.length()) {
-                suffix.insert(0, s.charAt(start));
-                start++;
-            }
-            sb.append(suffix.toString());
-        }
+    private String reverse(String str) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = str.length() - 1; i >= 0; i--) sb.append(str.charAt(i));
         return sb.toString();
     }
 
@@ -41,6 +29,7 @@ public class Problem541 {
         Problem541 problem541 = new Problem541();
         System.out.println(problem541.reverseStr("abcdefg", 2));
         System.out.println(problem541.reverseStr("abcdefg", 8));
+        System.out.println(problem541.reverseStr("abcdefg", 4));
         System.out.println(problem541.reverseStr("hyzqyljrnigxvdtneasepfahmtyhlohwxmkqcdfehybknvdmfrfvtbsovjbdhevlfxpdaovjgunjqlimjkfnqcqnajmebeddqsgl", 39));
     }
 }
