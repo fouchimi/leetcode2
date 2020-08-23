@@ -4,21 +4,22 @@ public class Problem719 {
 
     public int smallestDistancePair(int[] nums, int k) {
         Arrays.sort(nums);
-        int n = nums.length;
-        int low = 0, high = nums[n - 1] - nums[0];
-        while (low < high) {
-            int cnt = 0, left = 0;
-            int mid = (low + high) / 2;
+        int[] arr = new int[nums[nums.length-1] + 1];
 
-            for (int right = 0; right < n; right++) {
-                while (nums[right] - nums[left] > mid) left++;
-                cnt += right - left;
+        for(int i=0; i<nums.length; i++){
+            for(int j=i+1; j<nums.length;j++){
+                arr[Math.abs(nums[i] - nums[j])]++;
             }
-
-            if (cnt >= k) high = mid;
-            else low = mid + 1;
         }
-        return low;
+
+        int count = 0;
+        for(int i=0; i<arr.length; i++){
+            count += arr[i];
+            if(count >= k) {
+                return i;
+            }
+        }
+        return 0;
     }
 
 
