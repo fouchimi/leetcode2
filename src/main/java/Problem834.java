@@ -1,46 +1,49 @@
-import java.util.Arrays;
+import java.util.*;
 
 public class Problem834 {
-
     public int[] sumOfDistancesInTree(int N, int[][] edges) {
-        int[][] dp = new int[N][N];
+        if (N == 1) return new int[N];
+        if (N == 2) return new int[]{1, 1};
 
-        for (int i = 0; i < N; i++) Arrays.fill(dp[i], Integer.MAX_VALUE);
+        List<int[]>[] graph = new ArrayList[N];
+        for (int i = 0; i < N; i++) graph[i] = new ArrayList<>();
 
-        for (int i = 0, j = 0; i < N && j < N; i++, j++) dp[i][j] = 0;
-
-        for (int[] edge : edges) {
-            int src = edge[0];
-            int dest = edge[1];
-            dp[src][dest] = 1;
-            dp[dest][src] = 1;
+        for (int i = 0; i < edges.length; i++) {
+            // [0] = to  [1] = sum  [2] = num
+            graph[edges[i][0]].add(new int[]{edges[i][1], 0, 0});
+            graph[edges[i][1]].add(new int[]{edges[i][0], 0, 0});
         }
 
-        for (int k = 0; k < N; k++) {
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < N; j++) {
-                    if (dp[i][k] == Integer.MAX_VALUE || dp[k][j] == Integer.MAX_VALUE) continue;
-                    dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k][j]);
+        int[] result = new int[N];
+        boolean[] seen = new boolean[N];
+        for (int i = 0; i < N; i++) result[i] = dfs(graph, i, seen)[0];
+        return result;
+    }
+
+    private int[] dfs(List<int[]>[] graph, int v, boolean[] seen) {
+        seen[v] = true;
+        int sum = 0, num = 1;
+        for (int[] adj : graph[v]) {
+            if (!seen[adj[0]]) {
+                if (adj[1] == 0 && adj[2] == 0) {
+                    int[] res = dfs(graph, adj[0], seen);
+                    adj[1] = res[0];
+                    adj[2] = res[1];
                 }
+                sum += (adj[1] + adj[2]);
+                num += adj[2];
             }
         }
-
-        int[] res = new int[N];
-
-        for (int i = 0; i < N; i++) {
-            int sum = 0;
-            for (int j = 0; j < N; j++) sum += dp[i][j];
-            res[i] = sum;
-        }
-
-        return res;
+        seen[v] = false;
+        return new int[]{sum, num};
     }
 
     public static void main(String[] args) {
         Problem834 problem834 = new Problem834();
-        int[] res = problem834.sumOfDistancesInTree(6, new int[][]{{0,1},{0,2},{2,3},{2,4},{2,5}});
-        for (int val : res) {
+        int[] ans = problem834.sumOfDistancesInTree(6, new int[][]{{0,1},{0,2},{2,3},{2,4},{2,5}});
+        for (int val : ans) {
             System.out.print(val + " ");
         }
+        System.out.println();
     }
 }
