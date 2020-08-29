@@ -1,47 +1,26 @@
 public class Problem5 {
     public String longestPalindrome(String s) {
-        if (s == null || s.length() == 0) return "";
-        int N = s.length(), maxLength = 0, k = 0, cols = 2;
-        String maxSubStr = "";
-        if (N == 1 || (N == 2 && s.charAt(0) == s.charAt(1))) return s;
-        int[][] dp = new int[N][N];
-        while (k < 2) {
-            for (int i = 0; i < dp.length; ) {
-                int j = k;
-                for (; j < dp.length && i < dp.length;) {
-                    if (s.charAt(i) == s.charAt(j)) {
-                        dp[i][j] = 1;
-                        if (j - i + 1 > maxLength) {
-                            maxLength = j - i + 1;
-                            maxSubStr = s.substring(i, j + 1);
-                        }
-                    }
-                    i++;
-                    j++;
-                }
-                if (j == dp.length) break;
+        if (s == null || s.length() < 1) return "";
+        int start = 0, end = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int len1 = expandAroundCenter(s, i, i);
+            int len2 = expandAroundCenter(s, i, i + 1);
+            int len = Math.max(len1, len2);
+            if (len > end - start) {
+                start = i - ((len - 1) / 2);
+                end = i + (len / 2);
             }
-            k++;
         }
+        return s.substring(start, end + 1);
+    }
 
-        while (cols < N) {
-            for (int i = 0; i < dp.length;) {
-                int j = cols;
-                for (; j < dp.length; j++) {
-                    if (s.charAt(i) == s.charAt(j) && (i + 1 < dp.length && dp[i + 1][j - 1] == 1)) {
-                        dp[i][j] = 1;
-                        if (j - i + 1 > maxLength) {
-                            maxLength = j - i + 1;
-                            maxSubStr = s.substring(i, j + 1);
-                        }
-                    }
-                    i++;
-                }
-                cols++;
-                if (j == dp.length) break;
-            }
+    private int expandAroundCenter(String s, int left , int right) {
+        if (s == null || left > right) return 0;
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
         }
-        return maxSubStr;
+        return right - left - 1;
     }
 
     public static void main(String[] args) {
@@ -49,5 +28,7 @@ public class Problem5 {
 //        System.out.println(problem5.longestPalindrome("babad"));
 //        System.out.println(problem5.longestPalindrome("cbbd"));
         System.out.println(problem5.longestPalindrome("abcba"));
+        System.out.println(problem5.longestPalindrome("racecar"));
+        System.out.println(problem5.longestPalindrome("aacbbcaa"));
     }
 }
