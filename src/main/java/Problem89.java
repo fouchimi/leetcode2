@@ -5,21 +5,36 @@ public class Problem89 {
 
     public List<Integer> grayCode(int n) {
         List<Integer> ans = new ArrayList<>();
-        if(n == 0) {
-            ans.add(0);
-            return ans;
-        }
-
-        List<Integer> part1 = grayCode(n - 1);
-        List<Integer> part2 = new ArrayList<>();
-        int high = (int)Math.pow(2, n - 1);
-        for(int i = part1.size() - 1; i >= 0; i--) {
-            part2.add(high + part1.get(i));
-        }
-
-        ans.addAll(part1);
-        ans.addAll(part2);
+        int[] arr = new int[n];
+        helper(n, arr, ans, 0, false);
         return ans;
+    }
+
+    private void helper(int n, int[] arr, List<Integer> ans, int index, boolean flag) {
+        if (index == n) {
+            ans.add(convertToDecimal(arr));
+            return;
+        }
+        if (!flag) {
+            arr[index] = 0;
+            helper(n, arr, ans, index + 1, false);
+            arr[index] = 1;
+            helper(n, arr, ans, index + 1, true);
+        } else {
+            arr[index] = 1;
+            helper(n, arr, ans, index + 1, false);
+            arr[index] = 0;
+            helper(n, arr, ans, index + 1, true);
+        }
+    }
+
+    private int convertToDecimal(int[] arr) {
+        int result = 0, base = 1;
+        for (int i = arr.length - 1; i >= 0; i--) {
+            result += arr[i] * base;
+            base *= 2;
+        }
+        return result;
     }
 
     public static void main(String[] args) {
